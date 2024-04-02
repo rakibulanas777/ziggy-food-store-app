@@ -14,6 +14,11 @@ const ViewCart = () => {
     // const handlePush = () => {
     //     router.push("/login");
     // };
+    
+
+
+const totalItemQuantity = cartItems.reduce((total, item) => total + item.qty, 0);
+
     return (
         <>
             <div className="pt-14">
@@ -27,7 +32,8 @@ const ViewCart = () => {
                             <div className="flex justify-between border-b pb-8">
                                 <h1 className="font-semibold text-2xl">My Cart</h1>
                                 <h2 className="font-semibold text-2xl">
-                                {cartItems.reduce((total, item) => total + item.qty, 0)} Items
+                                {totalItemQuantity} Item{totalItemQuantity !== 1 ? 's' : ''} 
+
                                 </h2>
                             </div>
                             <div className="flex mt-10 mb-5">

@@ -6,11 +6,11 @@ const createOrder = async (req, res) => {
   try {
     const { user, items, totalAmount } = req.body;
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
+      payment_method_types: ["card", "google_pay"],
       line_items: [
         {
           price_data: {
-            currency: "usd",
+            currency: "cad",
             product_data: {
               name: "paid for food",
             },
@@ -68,7 +68,7 @@ const markOrderAsDelivered = async (req, res) => {
     res.status(200).json({
       success: true,
       data: order,
-      message: "Deliverd",
+      message: "Delivered",
     });
   } catch (error) {
     console.log(error);

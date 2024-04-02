@@ -16,6 +16,8 @@ const Navbar = () => {
     const handleNav = () => {
         setNav(!nav)
     }
+    const totalItemQuantity = cartItems.reduce((total, item) => total + item.qty, 0);
+
     return (
         <>
 
@@ -45,12 +47,12 @@ const Navbar = () => {
                                 <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
                                     <div className="indicator">
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-                                        <span className="badge text-red-500 badge-sm indicator-item">{cartItems.length}</span>
+                                        <span className="badge text-red-500 badge-sm indicator-item">{totalItemQuantity}</span>
                                     </div>
                                 </div>
                                 <div tabIndex={0} className="mt-3 z-[1] bg-white card card-compact dropdown-content w-52  shadow">
                                     <div className="card-body">
-                                        <span className="font-bold text-lg">{cartItems.length} Items</span>
+                                        <span className="font-bold text-lg">{totalItemQuantity} Item{totalItemQuantity !== 1 ? 's' : ''}</span>
                                         <div className="card-actions">
                                             <Link to='/viewcart'>
                                                 <button className="bg-[#F54748] active:scale-90 transition duration-100 transform hover:shadow-xl shadow-md rounded-full px-8 py-2 text-xl font-medium text-white">View cart</button>
