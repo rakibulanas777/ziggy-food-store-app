@@ -36,7 +36,7 @@ const foodSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    Category: {
+    catagory: {
       type: String,
       required: true,
     },

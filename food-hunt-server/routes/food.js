@@ -5,8 +5,9 @@ const {
   getAllFoods,
   getFoodById,
   getNewFoods,
-  getFoodsFromDistinctCategory,
+  getFoodsFromDistinctCatagory,
   getTopRating,
+  removeFoodById,
 } = require("../controller/food");
 
 router = express.Router();
@@ -15,7 +16,7 @@ router.post("/addfood", protect, createFood);
 router.get("/getAllFoods", getAllFoods);
 router.get("/getNewFoods", getNewFoods);
 router.get("/getToRated", getTopRating);
-router.get("/specialFoods", getFoodsFromDistinctCategory);
+router.get("/specialFoods", getFoodsFromDistinctCatagory);
 router.get("/getFood/:id", getFoodById);
-
+router.delete("/foods/:id", removeFoodById);
 module.exports = router;

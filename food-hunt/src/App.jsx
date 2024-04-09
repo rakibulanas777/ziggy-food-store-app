@@ -21,6 +21,8 @@ import { loadStripe } from "@stripe/stripe-js";
 import Success from './pages/Success'
 import MyOrder from './pages/MyOrder'
 import AllOrder from './pages/admin/AllOrder'
+import AboutUs from './pages/AboutUs/'; 
+
 import { InfinitySpin } from 'react-loader-spinner'
 function App() {
   const [count, setCount] = useState(0)
@@ -61,6 +63,7 @@ function App() {
                 <VerifyOtp />
               </ProtectedRoute>
             } />
+            <Route path="/about-us" element={<AboutUs />} />
             <Route path='/addfood' element={<ProtectedRoute><Addfood /></ProtectedRoute>} />
             <Route path='/menu' element={<><Menu /></>} />
             <Route path='/profile' element={<ProtectedRoute><Proifle /></ProtectedRoute>} />

@@ -3,7 +3,7 @@ const Food = require("../model/Food");
 const createFood = async (req, res) => {
   try {
     // console.log(req.body);
-    // const { name, price, description, Category, weight, foodImage } = req.body;
+    // const { name, price, description, catagory, weight, foodImage } = req.body;
     console.log(req.body);
 
     const newFood = new Food(req.body);
@@ -26,29 +26,28 @@ const createFood = async (req, res) => {
 
 const getAllFoods = async (req, res) => {
   try {
-    const { category } = req.query;
-    console.log(category);
+    const { category, search } = req.query;
+    console.log(category, search);
+
+    let foodItems;
     if (category === "all") {
-      const foodItems = await Food.find();
-
-      res.status(200).json({
-        message: "Food successfully added",
-        success: true,
-        data: {
-          food: foodItems,
-        },
-      });
+      foodItems = await Food.find();
     } else {
-      const foodItems = await Food.find({ Category: category });
-
-      res.status(200).json({
-        message: "Food successfully added",
-        success: true,
-        data: {
-          food: foodItems,
-        },
-      });
+      foodItems = await Food.find({ catagory: category });
     }
+    if (search) {
+      foodItems = foodItems.filter((food) =>
+        food.name.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+
+    res.status(200).json({
+      message: "Foods retrieved successfully",
+      success: true,
+      data: {
+        food: foodItems,
+      },
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -57,6 +56,7 @@ const getAllFoods = async (req, res) => {
     });
   }
 };
+
 const getNewFoods = async (req, res) => {
   try {
     const foodItems = await Food.find().sort({ createdAt: -1 }).limit(12);
@@ -76,18 +76,18 @@ const getNewFoods = async (req, res) => {
     });
   }
 };
-const getFoodsFromDistinctCategory = async (req, res) => {
+const getFoodsFromDistinctCatagory = async (req, res) => {
   try {
-    const distinctCategory = await Food.distinct("Category");
+    const distinctCatagory = await Food.distinct("catagory");
     const distinctfood = await Promise.all(
-      distinctCategory.slice(0, 4).map(async (Category) => {
-        const food = await Food.findOne({ Category });
+      distinctCatagory.slice(0, 4).map(async (catagory) => {
+        const food = await Food.findOne({ catagory });
         return food;
       })
     );
 
     res.status(200).json({
-      message: "4 different Category food",
+      message: "4 different catagory food",
       success: true,
       data: {
         food: distinctfood,
@@ -108,7 +108,7 @@ const getTopRating = async (req, res) => {
       .limit(4);
 
     res.status(200).json({
-      message: "4 different Category food",
+      message: "4 different catagory food",
       success: true,
       data: {
         food: topRatedFoods,
@@ -144,11 +144,41 @@ const getFoodById = async (req, res) => {
   }
 };
 
+const removeFoodById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deletedFood = await Food.findByIdAndDelete(id);
+
+    if (!deletedFood) {
+      return res.status(404).json({
+        error: "Food not found",
+        success: false,
+      });
+    }
+
+    res.status(200).json({
+      message: "Food successfully removed",
+      success: true,
+      data: {
+        food: deletedFood,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: "Internal server error",
+      success: false,
+    });
+  }
+};
+
 module.exports = {
   createFood,
   getAllFoods,
   getFoodById,
   getNewFoods,
-  getFoodsFromDistinctCategory,
+  getFoodsFromDistinctCatagory,
   getTopRating,
+  removeFoodById,
 };

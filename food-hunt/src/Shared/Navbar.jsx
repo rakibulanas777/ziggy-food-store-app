@@ -42,7 +42,7 @@ const Navbar = () => {
                                 user?.user?.role === 'admin' && <Link to="/addfood" className="text-[#191919] text-xl font-medium hover:text-red-500">Add food</Link>
                             }
 
-                            <a href="" className="text-[#191919] text-xl font-medium hover:text-red-500">Popular food</a>
+                           {/* <a href="" className="text-[#191919] text-xl font-medium hover:text-red-500">Popular food</a>*/}
                             <div className="dropdown dropdown-end">
                                 <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
                                     <div className="indicator">
@@ -116,7 +116,7 @@ const Navbar = () => {
                             <a href="" className="text-[#191919] text-base font-medium hover:text-red-500">Why foodHunt</a>
                             <a href="" className="text-[#191919] text-base font-medium hover:text-red-500">Our Menu</a>
                             <a href="" className="text-[#191919] text-base font-medium hover:text-red-500">Add food</a>
-                            <a href="" className="text-[#191919] text-base font-medium hover:text-red-500">Popular food</a>
+                            {/*<a href="" className="text-[#191919] text-base font-medium hover:text-red-500">Popular food</a>*/}
                             <button className=" bg-[#F54748] active:scale-90 transition duration-100 transform hover:shadow-xl shadow-md rounded-full px-8 py-2 text-xl font-medium text-white">login</button>
                         </div>
                     </div>

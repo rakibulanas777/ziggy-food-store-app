@@ -51,32 +51,26 @@ const registerController = async (req, res) => {
       const transporter = nodemailer.createTransport({
         service: "Gmail",
         auth: {
-          user: "shivambalat786@gmail.com",
-          pass: "evmvbanckbbiijzr",
+          user: "rakibulanas777@gmail.com",
+          pass: "ldozbvhjhmomvink",
         },
       });
 
       const mailOptions = {
-        from: "Ziggy Food Store <shivambalat786@gmail.com>",
+        from: "Food Hunt <rakibulanas777@gmail.com>",
         to: req.body.email,
         subject: "OTP for Email Verification",
         html: `
-        <p>Dear ${req.body.name},</p> 
-    <p>Thank you for registering with Ziggy Food Store. Your security is our top priority, and to ensure the safety of your account, we require email verification.</p>
-
-<p>To complete the verification process, please use the One-Time Password (OTP) provided below within the next 15 minutes:</p>
-
-<p>OTP: <strong>${otp}</strong></p>
-
-<p>Please note that this OTP is time-sensitive and will expire after 15 minutes. If you did not initiate this verification process, please disregard this email.</p>
-
-<p>Should you encounter any difficulties or have any questions, please don't hesitate to reach out to our support team.</p>
-
-<p>Best Regards,</p>
-
-<p>Ziggy Food Store</p>
-
-<p style="font-style: italic; color: #888;">Note: This is an automated email. Please do not reply.</p>
+    <p>Hello,</p>
+    <p>Thank you for registering with Food Hunt. To complete your email verification, please use the following One-Time Password (OTP):</p>
+    <p style="font-size: 24px; color: #007bff;"><strong>${otp}</strong></p>
+    
+    <p>This OTP is valid for the next 15 minutes. If you didn't request this verification, please ignore this email.</p>
+    
+    <p>Best regards,</p>
+    <p>The WavLyric Team</p>
+    
+    <p style="font-style: italic; color: #888;">Note: This is an automated email. Please do not reply.</p>
   `,
       };
 

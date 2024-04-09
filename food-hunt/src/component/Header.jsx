@@ -34,18 +34,7 @@ const Header = () => {
                                 <FaSearch size={15} className=' cursor-pointer text-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' />
                             </button>
                         </form>
-                        <div className="flex  gap-8 items-center">
-                            <button className="bg-[#f54748] active:scale-90 transition duration-500 transform hover:shadow-xl shadow-md rounded-full px-8 py-2 text-xl font-medium text-white"> explore now</button>
-
-                            <div className="sm:flex hidden gap-4 items-center">
-                                <div className="h-14 w-14 shadow-md cursor-pointer relative bg-white rounded-full">
-                                    <FaPlay size={18} className=' cursor-pointer text-[#f54748] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' />
-                                </div>
-                                <div className="lg:text-xl  text-[#191919] md:text-lg text-base cursor-pointer">
-                                    watch now
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
                     <img src={header} className=' h-[28rem] mx-auto justify-end' alt="" />
                 </div>
