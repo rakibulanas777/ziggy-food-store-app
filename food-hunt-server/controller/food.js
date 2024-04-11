@@ -2,8 +2,6 @@ const Food = require("../model/Food");
 
 const createFood = async (req, res) => {
   try {
-    // console.log(req.body);
-    // const { name, price, description, catagory, weight, foodImage } = req.body;
     console.log(req.body);
 
     const newFood = new Food(req.body);
@@ -34,11 +32,6 @@ const getAllFoods = async (req, res) => {
       foodItems = await Food.find();
     } else {
       foodItems = await Food.find({ catagory: category });
-    }
-    if (search) {
-      foodItems = foodItems.filter((food) =>
-        food.name.toLowerCase().includes(search.toLowerCase())
-      );
     }
 
     res.status(200).json({

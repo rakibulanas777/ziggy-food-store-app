@@ -6,10 +6,10 @@ import NewFoods from '../component/NewFoods'
 import Service2 from '../component/Service2'
 import Special from '../component/Special'
 
-const Home = () => {
+const Home = ({ setSearchValue }) => {
     return (
         <div>
-            <Header />
+            <Header setSearchValue={setSearchValue} />
             <RecommendedFood />
             <Service />
             <NewFoods />

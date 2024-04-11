@@ -1,17 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { useCartContext } from '../../context/cardContext'; // Make sure this path is correct
 
 const Success = () => {
-    const { cartItems } = useCartContext(); // Access cart items from the context
-    const generateDeliveryTime = () => {
-        return Math.floor(Math.random() * (60 - 40 + 1) + 40);
-    };
-
-    const estimatedDeliveryTime = generateDeliveryTime();
-
-    
-
     return (
         <div className='pt-[18vh]'>
 
@@ -25,8 +15,6 @@ const Success = () => {
                     <div className="text-center">
                         <h3 className="md:text-2xl text-base text-gray-900 font-semibold text-center">Payment Done!</h3>
                         <p className="text-gray-600 my-2">Thank you for completing your secure online payment.</p>
-                        <p><strong>Estimated Delivery Time:</strong> {estimatedDeliveryTime-10} - {estimatedDeliveryTime} minutes</p>
-
                         <p> Have a great day!  </p>
                         <div className="py-10 text-center">
                             <Link to="/" className="px-12 bg-red-600 hover:bg-red-500 text-white font-semibold py-3">

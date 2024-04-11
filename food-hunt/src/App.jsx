@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
-import viteLogo from './assets/Logo.svg'
+import viteLogo from '/vite.svg'
 import './App.css'
 import Navbar from './Shared/Navbar'
 import Home from './pages/Home'
@@ -21,9 +21,8 @@ import { loadStripe } from "@stripe/stripe-js";
 import Success from './pages/Success'
 import MyOrder from './pages/MyOrder'
 import AllOrder from './pages/admin/AllOrder'
-import AboutUs from './pages/AboutUs/'; 
-
 import { InfinitySpin } from 'react-loader-spinner'
+import AddCouponForm from './pages/admin/AddCouponForm'
 function App() {
   const [count, setCount] = useState(0)
   const stripePromise = loadStripe('pk_test_51LM2J1SIiDyURhxDNv1N4eG5FI9FdphG6ukPj3hrrSo6UWrgbl6o0nJqOwemWcbqjlKNBR8nqhl6rnfzz8VK2Sjx00y47ErW1D');
@@ -34,6 +33,8 @@ function App() {
       setLoading(false)
     }, 2000)
   }, [])
+
+  const [searchValue, setSearchValue] = useState('');
   return (
     <>
       {
@@ -54,8 +55,8 @@ function App() {
 
           <Navbar />
           <Routes>
-            <Route path='/' element={<ProtectedRoute><Home /></ProtectedRoute>} />
-            <Route path='/home' element={<><Home /></>} />
+            <Route path='/' element={<ProtectedRoute><Home setSearchValue={setSearchValue} /></ProtectedRoute>} />
+            <Route path='/home' element={<><Home setSearchValue={setSearchValue} /></>} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
             <Route path='/verifyOtp' element={
@@ -63,9 +64,8 @@ function App() {
                 <VerifyOtp />
               </ProtectedRoute>
             } />
-            <Route path="/about-us" element={<AboutUs />} />
             <Route path='/addfood' element={<ProtectedRoute><Addfood /></ProtectedRoute>} />
-            <Route path='/menu' element={<><Menu /></>} />
+            <Route path='/menu' element={<>< Menu searchQuery={searchValue} setSearchQuery={setSearchValue} /></>} />
             <Route path='/profile' element={<ProtectedRoute><Proifle /></ProtectedRoute>} />
             <Route path='/menu/:id' element={<><FoodPage /></>} />
             <Route path='/viewcart' element={<><ViewCart /></>} />
@@ -73,6 +73,7 @@ function App() {
             <Route path='/success' element={<ProtectedRoute><Success /></ProtectedRoute>} />
             <Route path='/my-order' element={<ProtectedRoute><MyOrder /></ProtectedRoute>} />
             <Route path='/all-order' element={<ProtectedRoute><AllOrder /></ProtectedRoute>} />
+            <Route path='/add-discount' element={<ProtectedRoute><AddCouponForm /></ProtectedRoute>} />
 
           </Routes>
 

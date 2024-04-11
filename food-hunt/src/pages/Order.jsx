@@ -14,10 +14,10 @@ import logo from "../assets/Logo.svg"
 import axios from 'axios';
 const Order = () => {
     const { cartItems, removeItem, addToCart } = useCartContext();
-    const itemsPrice = parseFloat(cartItems.reduce((a, c) => a + c.qty * c.price, 0).toFixed(2))
-    const taxPrice = parseFloat((itemsPrice * 0.13).toFixed(2))
-    const shippingPrice = itemsPrice > 2000 ? 0 : 20
-    const totalPrice = parseFloat((itemsPrice + shippingPrice + taxPrice).toFixed(2))
+    const itemsPrice = cartItems.reduce((a, c) => a + c.qty * c.price, 0);
+    const taxPrice = itemsPrice * 0.14;
+    const shippingPrice = itemsPrice > 2000 ? 0 : 20;
+    const totalPrice = itemsPrice + shippingPrice;
     const { user } = useUserContext();
     const stripe = useStripe();
 
@@ -63,32 +63,20 @@ const Order = () => {
                 <NavLink to="/">
                     <img src={logo} alt="" className="logo mb-6 cursor-pointer text-center" />
                 </NavLink>
-                <div >
-    <div className='ease-in duration-300 max-w-4xl mx-auto shadow-lg rounded-lg bg-white'>
-        <div className="px-8 py-5">
-            <h2 className="text-2xl font-bold text-center mb-6">Invoice</h2>
-            <div className="flex justify-between items-center mb-4">
-                <span className="text-lg font-medium text-[#2e2e2e]">Sub Total:</span>
-                <span className="text-lg font-bold text-[#f54748]">$ {itemsPrice.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between items-center mb-4">
-                <span className="text-lg font-medium text-[#2e2e2e]">Tax:</span>
-                <span className="text-lg font-bold text-[#f54748]">$ {taxPrice.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between items-center mb-4">
-                <span className="text-lg font-medium text-[#2e2e2e]">Delivery Fee:</span>
-                <span className="text-lg font-bold text-[#f54748]">$ {shippingPrice.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between items-center mb-6">
-                <span className="text-lg font-medium text-[#2e2e2e]">Total:</span>
-                <span className="text-lg font-bold text-[#f54748]">$ {totalPrice.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-center">
-                <button className="bg-[#f54748] active:scale-90 transition duration-150 transform hover:shadow-xl shadow-md rounded-full px-8 py-2 text-xl font-medium text-white" onClick={handleFinish}>Pay ${totalPrice.toFixed(2)}</button>
-            </div>
-        </div>
-    </div>
-</div>
+                <div className="text-xl md:text-xl font-bold text-[#2e2e2e] lg:text-2xl mb-3">
+                    Items Price :  $<span className="text-[#f54748]">{itemsPrice}</span>
+                </div>
+                <div className="text-xl md:text-xl font-bold text-[#2e2e2e] lg:text-2xl mb-3">
+                    Tax :  $<span className="text-[#f54748]">{taxPrice}</span>
+                </div>
+                <div className="text-xl md:text-xl font-bold text-[#2e2e2e] lg:text-2xl mb-3">
+                    Shipping fee :  $<span className="text-[#f54748]">{shippingPrice}</span>
+                </div>
+                <div className="text-xl md:text-xl font-bold text-[#2e2e2e] lg:text-2xl mb-3">
+                    Total price :  $<span className="text-[#f54748]">{totalPrice}</span>
+                </div>
+                <button className=" bg-[#f54748] active:scale-90 transition duration-150 transform hover:shadow-xl shadow-md w-full rounded-full px-8 py-2 text-xl font-medium text-white mx-auto text-center" type='submit' onClick={handleFinish}>pay ${totalPrice}</button>
+
 
                 <ToastContainer />
             </div>

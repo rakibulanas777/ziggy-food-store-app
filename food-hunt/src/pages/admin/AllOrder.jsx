@@ -48,20 +48,20 @@ const AllOrder = () => {
                                 Food  Details
                             </h3>
                             <h3 className="font-semibold text-center text-gray-900 text-xs uppercase w-1/5 ">
-                                Payment Status
+                                Payment
                             </h3>
                             <h3 className="font-semibold text-center text-gray-900 text-xs uppercase w-1/5 ">
-                                Order Status                         
-                         </h3>
-                            <h3 className="font-semibold text-center text-gray-900 text-xs uppercase w-1/5 ">
-                            Status Update
+                                Total Price
                             </h3>
                             <h3 className="font-semibold text-center text-gray-900 text-xs uppercase w-1/5 ">
-                                Date & Time
+                                Total Price
+                            </h3>
+                            <h3 className="font-semibold text-center text-gray-900 text-xs uppercase w-1/5 ">
+                                Date
                             </h3>
 
                             <h3 className="font-semibold text-center text-gray-900 text-xs uppercase w-1/5 ">
-                                Total
+                                Total Price
                             </h3>
                         </div>
                         {order?.map((order) => {
@@ -85,11 +85,10 @@ export default AllOrder
 
 const OrderFoods = ({ order }) => {
     const { user, setUser } = useUserContext()
-    
     const handleDelivered = async (id) => {
         console.log(id)
         try {
-            const res = await axios.post(`http://localhost:8001/api/v1/orders/status`, {
+            const res = await axios.post(`http://localhost:8001/api/v1/order/status`, {
                 userId: user?.user._id,
                 orderId: id,
                 token: localStorage.getItem("token")
@@ -109,10 +108,6 @@ const OrderFoods = ({ order }) => {
             console.log(error)
         }
     }
-    //date format
-    const date = new Date(order?.createdAt);
-    const formattedDate = `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
-
     return (
         <div className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
             <div className="flex w-2/5">
@@ -149,10 +144,10 @@ const OrderFoods = ({ order }) => {
                 }</span>
             </div>
             <div className="flex justify-center w-1/5 cursor-pointer">
-                <button className=" bg-[#f54748] active:scale-90 transition duration-150 transform hover:shadow-xl shadow-md rounded-full px-8 py-2 text-xl font-medium text-white mx-auto text-center" onClick={() => handleDelivered(order?._id)}>Delivered</button>
+                <button className=" bg-[#f54748] active:scale-90 transition duration-150 transform hover:shadow-xl shadow-md rounded-full px-8 py-2 text-xl font-medium text-white mx-auto text-center" onClick={() => handleDelivered(order?._id)}>Deliverd</button>
             </div>
             <span className="text-center  w-1/5 font-semibold text-sm">
-                {formattedDate}
+                {order?.createdAt}
             </span>
             <span className="text-center w-1/5 font-semibold text-sm">
                 {order?.totalAmount

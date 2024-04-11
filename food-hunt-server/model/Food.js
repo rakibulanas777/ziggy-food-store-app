@@ -44,9 +44,12 @@ const foodSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    weight: {
-      type: Number,
+    ingredients: {
+      type: String,
       required: true,
+    },
+    coupon: {
+      type: String,
     },
     reviews: [reviewSchema],
     foodImage: {

@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { useCartContext } from "../../context/cardContext";
 import { useUserContext } from "../../context/userContext";
 import { Link } from "react-router-dom";
+import axios from 'axios';
 
 const ViewCart = () => {
     const { cartItems, removeItem, addToCart } = useCartContext();
@@ -11,13 +12,46 @@ const ViewCart = () => {
     const shippingPrice = itemsPrice > 2000 ? 0 : 20;
     const totalPrice = itemsPrice + shippingPrice;
     const { user } = useUserContext();
-    // const handlePush = () => {
-    //     router.push("/login");
-    // };
-    
 
+    const [couponCode, setCouponCode] = useState("");
+    const [discountAmount, setDiscountAmount] = useState(0);
+    const [coupons, setCoupons] = useState([]);
 
-const totalItemQuantity = cartItems.reduce((total, item) => total + item.qty, 0);
+    const fetchDiscountCoupons = async () => {
+        try {
+            const response = await axios.get("http://localhost:8001/api/v1/coupons");
+            const fetchedCoupons = response.data.coupons;
+            setCoupons(fetchedCoupons);
+        } catch (error) {
+            console.error("Error fetching coupons:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchDiscountCoupons();
+    }, []);
+
+    const applyCoupon = (coupon) => {
+        if (coupon && totalPrice >= coupon.minOrderAmount) {
+            let appliedDiscount = 0;
+            if (coupon.discountType === "percentage") {
+                appliedDiscount = (coupon.discountAmount / 100) * totalPrice;
+            } else {
+                appliedDiscount = coupon.discountAmount;
+            }
+            setDiscountAmount(appliedDiscount);
+        }
+    };
+
+    const handleApplyCoupon = () => {
+        const selectedCoupon = coupons.find(coupon => coupon.code === couponCode);
+        if (selectedCoupon) {
+            applyCoupon(selectedCoupon);
+        } else {
+            // Handle case when the entered coupon code is not valid
+            console.log("Invalid coupon code");
+        }
+    };
 
     return (
         <>
@@ -30,10 +64,9 @@ const totalItemQuantity = cartItems.reduce((total, item) => total + item.qty, 0)
                     <div className="container mx-auto py-6">
                         <div className="w-full bg-white px-10 py-5 text-black rounded-md">
                             <div className="flex justify-between border-b pb-8">
-                                <h1 className="font-semibold text-2xl">My Cart</h1>
+                                <h1 className="font-semibold text-2xl">My watch list</h1>
                                 <h2 className="font-semibold text-2xl">
-                                {totalItemQuantity} Item{totalItemQuantity !== 1 ? 's' : ''} 
-
+                                    {cartItems.length} Items
                                 </h2>
                             </div>
                             <div className="flex mt-10 mb-5">
@@ -41,13 +74,13 @@ const totalItemQuantity = cartItems.reduce((total, item) => total + item.qty, 0)
                                     Product Details
                                 </h3>
                                 <h3 className="font-semibold text-center text-gray-900 text-xs uppercase w-1/5 ">
-                                    Category
+                                    Seller
                                 </h3>
                                 <h3 className="font-semibold text-center text-gray-900 text-xs uppercase w-1/5 ">
                                     Price
                                 </h3>
                                 <h3 className="font-semibold text-center text-gray-900 text-xs uppercase w-1/5 ">
-                                    Total
+                                    Total Price
                                 </h3>
                             </div>
                             {cartItems.map((food) => {
@@ -56,7 +89,7 @@ const totalItemQuantity = cartItems.reduce((total, item) => total + item.qty, 0)
                                         key={food.id}
                                         food={food}
                                         removeItem={removeItem}
-                                        Length={cartItems.length + food.length}
+                                        Length={cartItems.length}
                                     />
                                 );
                             })}
@@ -69,46 +102,33 @@ const totalItemQuantity = cartItems.reduce((total, item) => total + item.qty, 0)
                                 }
                             >
                                 <div className="text-right  mb-2 font-semibold text-blue-900">
-                                    Shipping : {shippingPrice.toFixed(2)}
+                                    Shipping : {shippingPrice}
                                 </div>
                                 <div
-                  class="input bg-white input-bordere-none flex flex-col lg:flex-row p-1 rounded-xl lg:justify-between items-center">
-                  <input
-                    type="text"
-                    placeholder="Have any copupon?"
-                    class="bg-gray-100 py-3"
-                    id="coupon_input"
-                  />
-                  <button
-                    className="hover:bg-red-600 hover:border-red-600 border-red-500 btn-sm bg-red-500 text-white"
-                    id="btn_coupon"
-                  
-                  >
-                    Apply
-                  </button>
-                </div>
+                                    className="input bg-white input-bordere-none flex flex-col lg:flex-row p-1 rounded-xl lg:justify-between items-center"
+                                >
+                                    <input
+                                        type="text"
+                                        placeholder="Enter coupon code"
+                                        value={couponCode}
+                                        onChange={(e) => setCouponCode(e.target.value)}
+                                        className="bg-gray-100 py-3"
+                                    />
+                                    <button
+                                        className="hover:bg-red-600 hover:border-red-600 border-red-500 btn-sm bg-red-500 text-white"
+                                        onClick={handleApplyCoupon}
+                                    >
+                                        Apply
+                                    </button>
+                                </div>
                                 <div className="text-right  mb-2 font-semibold text-blue-900">
-                                    Total : {totalPrice.toFixed(2)}
+                                    Total Price : {totalPrice - discountAmount}
                                 </div>
                                 <Link to="/order">
                                     <button className="btn flex-end text-white hover:bg-red-600 hover:border-red-600 border-red-500 btn-sm bg-red-500">
                                         Check out
                                     </button>
                                 </Link>
-                                {/* {user?.data.user ? (
-                                    <Link href="/order">
-                                        <button className="btn flex-end text-white hover:bg-red-600 hover:border-red-600 border-red-500 btn-sm bg-red-500">
-                                            Check out
-                                        </button>
-                                    </Link>
-                                ) : (
-                                    <button
-                                        className="btn flex-end text-white hover:bg-red-600 hover:border-red-600 border-red-500 btn-sm bg-red-500"
-                                    // onClick={handlePush}
-                                    >
-                                        Check out
-                                    </button>
-                                )} */}
                             </div>
                         </div>
                     </div>
@@ -119,6 +139,9 @@ const totalItemQuantity = cartItems.reduce((total, item) => total + item.qty, 0)
 };
 
 export default ViewCart;
+
+
+
 
 const FavoriteFoods = ({ food }) => {
     const { cartItems, removeItem, addToCart } = useCartContext();
@@ -149,16 +172,16 @@ const FavoriteFoods = ({ food }) => {
                         </div>
                     </span>
 
-                    { <div
+                    {/* <div
 						className="font-semibold cursor-pointer hover:text-red-500 text-gray-500 text-xs"
 						onClick={() => removeItem(food)}
 					>
 						Remove
-					</div> }
+					</div> */}
                 </div>
             </div>
             <div className="flex justify-center w-1/5 cursor-pointer">
-                <span className="font-bold text-sm">{food.Category}</span>
+                <span className="font-bold text-sm">{food.catagory}</span>
             </div>
             <span className="text-center  w-1/5 font-semibold text-sm">
                 {food.price} X {food.qty}
